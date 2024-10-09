@@ -14,10 +14,21 @@ app.use(express.json());
 
 connectDB();
 
-// CREATE SERVER
+// END POINTS
 
+app.get('/', (req, res) => {
+	res.send('Welcome to Community connect...');
+});
+
+// Import routes
+
+// CREATE SERVER
 const PORT = process.env.PORT || 3000;
 
-app.listen(PORT, () => {
-	console.log(`Server is running on port ${PORT}`);
-});
+try {
+	app.listen(PORT, () => {
+		console.log(`Server is running on port ${PORT}`);
+	});
+} catch (error) {
+	console.log("Can't connect to the server: " + error.message);
+}
