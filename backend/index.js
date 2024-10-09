@@ -1,5 +1,6 @@
 import express from 'express';
 import dotenv from 'dotenv';
+import connectDB from './utils/db.js';
 
 dotenv.config();
 
@@ -8,6 +9,10 @@ const app = express();
 // Middleware to parse JSON request bodies
 
 app.use(express.json());
+
+// Connect to MongoDB
+
+connectDB();
 
 // CREATE SERVER
 
