@@ -1,7 +1,6 @@
-const mongoose = require('mongoose');
-const { Schema } = mongoose;
+import mongoose from 'mongoose';
 
-const userSchema = new Schema({
+const providerSchema = new mongoose.Schema({
 	name: {
 		type: String,
 		required: true,
@@ -15,21 +14,13 @@ const userSchema = new Schema({
 		type: String,
 		required: true,
 	},
-	role: {
-		type: String,
-		enum: ['consumer', 'provider'], // 'consumer' for normal users, 'provider' for businesses or artisans
-		required: true,
-	},
-	phone: {
-		type: String,
-	},
 	profileImage: {
-		type: String, // URL to the profile image
+		type: String,
 	},
 	services: [
 		{
 			type: Schema.Types.ObjectId,
-			ref: 'Service', // Links to the services they offer
+			ref: 'Service', // Links to services they offer
 		},
 	],
 	availability: {
@@ -39,7 +30,7 @@ const userSchema = new Schema({
 	reviews: [
 		{
 			type: Schema.Types.ObjectId,
-			ref: 'Review',
+			ref: 'Review', // Reviews for this provider
 		},
 	],
 	createdAt: {
@@ -48,6 +39,5 @@ const userSchema = new Schema({
 	},
 });
 
-const User = mongoose.model('User', userSchema);
-
-export default User;
+const Provider = mongoose.model('Provider', providerSchema);
+export default Provider;
