@@ -1,14 +1,20 @@
 import express from 'express';
+import { checkSchema } from 'express-validator';
+import {
+	getAllConsumers,
+	registerConsumer,
+} from '../controllers/consumer';
+import { createConsumerValidator } from '../middlewares/consumerValidator';
 
 const router = express.Router();
 
-router.get('/users', (req, res) => {
-	res.json({ message: 'GET users route' });
-});
+router.get('/users', getAllConsumers);
 
-router.post('/users', (req, res) => {
-	res.json({ message: 'POST users route' });
-});
+router.post(
+	'/users/register',
+	checkSchema(createConsumerValidator),
+	registerConsumer
+);
 
 router.get('/users/:id', (req, res) => {
 	res.json({ message: 'GET user by ID route' });

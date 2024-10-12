@@ -1,4 +1,4 @@
-const createUserValidator = {
+const createConsumerValidator = {
 	name: {
 		notEmpty: {
 			errorMessage: 'Name should not be empty',
@@ -32,7 +32,7 @@ const createUserValidator = {
 	},
 };
 
-const loginUserValidator = {
+const loginConsumerValidator = {
 	email: {
 		notEmpty: {
 			errorMessage: 'Email should not be empty',
@@ -58,7 +58,7 @@ const loginUserValidator = {
 	},
 };
 
-const deleteUserValidator = {
+const deleteConsumerValidator = {
 	userId: {
 		in: ['params'],
 		notEmpty: {
@@ -71,7 +71,7 @@ const deleteUserValidator = {
 	},
 };
 
-const updateUserValidator = {
+const updateConsumerValidator = {
 	name: {
 		optional: { options: { nullable: true } },
 		notEmpty: {
@@ -109,8 +109,8 @@ const updateUserValidator = {
 };
 
 export {
-	createUserValidator,
-	loginUserValidator,
-	deleteUserValidator,
-	updateUserValidator,
+	createConsumerValidator,
+	loginConsumerValidator,
+	deleteConsumerValidator,
+	updateConsumerValidator,
 };

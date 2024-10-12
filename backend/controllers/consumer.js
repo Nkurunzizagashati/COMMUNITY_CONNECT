@@ -1,6 +1,6 @@
 import Consumer from '../models/consumer.js';
 
-const getAllUsers = async (req, res) => {
+const getAllConsumers = async (req, res) => {
 	try {
 		const users = await Consumer.find();
 		if (users.length === 0) {
@@ -16,4 +16,6 @@ const getAllUsers = async (req, res) => {
 
 const getUserById = async (req, res) => {};
 
-export { getAllUsers };
+const registerConsumer = async (req, res) => {};
+
+export { getAllConsumers, registerConsumer };
