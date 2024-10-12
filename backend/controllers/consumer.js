@@ -1,6 +1,6 @@
 import { matchedData, validationResult } from 'express-validator';
 import Consumer from '../models/consumer.js';
-import { hashPassword } from '../utils/helpers.js';
+import { comparePasswords, hashPassword } from '../utils/helpers.js';
 
 const getAllConsumers = async (req, res) => {
 	try {
@@ -39,6 +39,47 @@ const registerConsumer = async (req, res) => {
 		delete consumerData.password;
 		res.status(201).json({
 			message: 'Consumer registered successfully',
+			consumerData,
+		});
+	} catch (error) {
+		console.log(error.message);
+		return res
+			.status(500)
+			.json({ message: 'Something went wrong' });
+	}
+};
+
+const loginConsumer = async (req, res) => {
+	try {
+		const result = validationResult(req);
+		if (!result.isEmpty()) {
+			return res
+				.status(400)
+				.json({ errors: result.array()[0].msg });
+		}
+
+		const data = matchedData(req);
+		const { email, password } = data;
+		const consumer = await Consumer.findOne({ email });
+		if (!consumer) {
+			return res.status(404).json({ message: 'User not found' });
+		}
+
+		const passwordsMatch = comparePasswords(
+			password,
+			consumer.password
+		);
+
+		if (!passwordsMatch) {
+			return res
+				.status(401)
+				.json({ message: 'Invalid email or password' });
+		}
+
+		const consumerData = consumer.toObject();
+		delete consumerData.password;
+		res.status(200).json({
+			message: 'Logged in successfully',
 			consumerData,
 		});
 	} catch (error) {
