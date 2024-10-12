@@ -3,28 +3,28 @@ import { checkSchema } from 'express-validator';
 import {
 	getAllConsumers,
 	registerConsumer,
-} from '../controllers/consumer';
-import { createConsumerValidator } from '../middlewares/consumerValidator';
+} from '../controllers/consumer.js';
+import { createConsumerValidator } from '../middlewares/consumerValidator.js';
 
 const router = express.Router();
 
 router.get('/users', getAllConsumers);
 
 router.post(
-	'/users/register',
+	'/register',
 	checkSchema(createConsumerValidator),
 	registerConsumer
 );
 
-router.get('/users/:id', (req, res) => {
+router.get('/:id', (req, res) => {
 	res.json({ message: 'GET user by ID route' });
 });
 
-router.put('/users/:id', (req, res) => {
+router.put('/:id', (req, res) => {
 	res.json({ message: 'PUT user by ID route' });
 });
 
-router.delete('/users/:id', (req, res) => {
+router.delete('/:id', (req, res) => {
 	res.json({ message: 'DELETE user by ID route' });
 });
 

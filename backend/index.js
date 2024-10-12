@@ -1,6 +1,7 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import connectDB from './utils/db.js';
+import routes from './routes/index.js';
 
 dotenv.config();
 
@@ -21,6 +22,8 @@ app.get('/', (req, res) => {
 });
 
 // Import routes
+
+app.use('/api', routes);
 
 // CREATE SERVER
 const PORT = process.env.PORT || 3000;

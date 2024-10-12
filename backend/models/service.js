@@ -1,3 +1,6 @@
+import mongoose from 'mongoose';
+import { Schema } from 'mongoose';
+
 const serviceSchema = new Schema({
 	name: {
 		type: String,

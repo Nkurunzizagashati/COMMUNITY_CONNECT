@@ -1,3 +1,6 @@
+import mongoose from 'mongoose';
+import { Schema } from 'mongoose';
+
 const bookingSchema = new Schema({
 	consumer: {
 		type: Schema.Types.ObjectId,
