@@ -38,10 +38,11 @@ const registerConsumer = async (req, res) => {
 		if (data.profileImage) {
 			const localPath = `public/images/document/${data.profileImage.filename}`;
 			const profileImageUrl = await cloudinaryFileUpload(
-				localPath
+				localPath,
+				'consumer_profile_images'
 			);
 
-			data.profileImage = profileImageUrl;
+			data.profileImage = profileImageUrl.url;
 			fs.unlinkSync(localPath);
 		}
 

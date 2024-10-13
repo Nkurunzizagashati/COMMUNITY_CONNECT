@@ -1,6 +1,6 @@
 import { v2 as cloudinary } from 'cloudinary';
 
-const cloudinaryFileUpload = async (fileToUpload) => {
+const cloudinaryFileUpload = async (fileToUpload, folderName) => {
 	cloudinary.config({
 		cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
 		api_key: process.env.CLOUDINARY_API_KEY,
@@ -9,6 +9,7 @@ const cloudinaryFileUpload = async (fileToUpload) => {
 	try {
 		const data = await cloudinary.uploader.upload(fileToUpload, {
 			resource_type: 'auto',
+			folder: folderName,
 		});
 		return {
 			url: data?.secure_url,
