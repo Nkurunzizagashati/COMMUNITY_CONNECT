@@ -1,21 +1,17 @@
 import jwt from 'jsonwebtoken';
 
-const generateJWTauthToken = async (payload) => {
-	const token = await jwt.sign(payload, process.env.JWT_SECRET, {
-		expiresIn: '15m',
+const generateJWTauthToken = (payload) => {
+	const token = jwt.sign(payload, process.env.JWT_SECRET, {
+		expiresIn: '1h',
 	});
 
 	return token;
 };
 
-const generateJWTrefreshToken = async (payload) => {
-	const token = await jwt.sign(
-		payload,
-		process.env.JWT_REFRESH_SECRET,
-		{
-			expiresIn: '7d',
-		}
-	);
+const generateJWTrefreshToken = (payload) => {
+	const token = jwt.sign(payload, process.env.JWT_REFRESH_SECRET, {
+		expiresIn: '7d',
+	});
 
 	return token;
 };

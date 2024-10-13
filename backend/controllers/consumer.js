@@ -86,15 +86,23 @@ const loginConsumer = async (req, res) => {
 		if (!passwordsMatch) {
 			return res
 				.status(401)
-				.json({ message: 'Invalid email or password' });
+				.json({ message: 'Invalid credentials' });
 		}
 
-		const accessToken = generateJWTauthToken(consumer.email);
-		const refreshToken = generateJWTrefreshToken(consumer.email);
-		const expireAt = new Date();
-		expireAt.setDate(expireAt.getDate() + 7);
+		const accessToken = generateJWTauthToken({
+			email: consumer.email,
+		});
+		const refreshToken = generateJWTrefreshToken({
+			email: consumer.email,
+		});
+		const expiresAt = new Date();
+		expiresAt.setDate(expiresAt.getDate() + 7);
 
-		await RefreshToken.create(refreshToken, consumer._id, expireAt);
+		await RefreshToken.create({
+			token: refreshToken,
+			userId: consumer._id,
+			expiresAt,
+		});
 
 		const consumerData = consumer.toObject();
 		delete consumerData.password;
