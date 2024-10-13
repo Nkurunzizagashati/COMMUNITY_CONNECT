@@ -6,6 +6,7 @@ import {
 	generateJWTrefreshToken,
 } from '../utils/authTokens.js';
 import RefreshToken from '../models/token.js';
+import { cloudinaryFileUpload } from '../utils/cloudinary.js';
 
 const getAllConsumers = async (req, res) => {
 	try {
@@ -32,6 +33,17 @@ const registerConsumer = async (req, res) => {
 
 		const data = matchedData(req);
 		const password = data.password;
+
+		// UPLOAD TO CLOUDINARY AND STORE IMAGE URL
+		if (data.profileImage) {
+			const localPath = `public/images/document/${data.profileImage.filename}`;
+			const profileImageUrl = await cloudinaryFileUpload(
+				localPath
+			);
+
+			data.profileImage = profileImageUrl;
+			fs.unlinkSync(localPath);
+		}
 
 		const hashedPassword = await hashPassword(password);
 		data.password = hashedPassword;
