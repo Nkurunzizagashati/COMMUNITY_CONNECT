@@ -1,6 +1,11 @@
 import { matchedData, validationResult } from 'express-validator';
 import Consumer from '../models/consumer.js';
 import { comparePasswords, hashPassword } from '../utils/helpers.js';
+import {
+	generateJWTauthToken,
+	generateJWTrefreshToken,
+} from '../utils/authTokens.js';
+import RefreshToken from '../models/token.js';
 
 const getAllConsumers = async (req, res) => {
 	try {
@@ -33,14 +38,21 @@ const registerConsumer = async (req, res) => {
 
 		// REGISTER CONSUMER
 		const consumer = await Consumer.create(data);
-		// STORE SESSION
+		const accessToken = generateJWTauthToken(consumer.email);
 
-		req.session.name = consumer.name;
+		// GENERATE TOKENS
+		const refreshToken = generateJWTrefreshToken(consumer.email);
+		const expireAt = new Date();
+		expireAt.setDate(expireAt.getDate() + 7);
+
+		await RefreshToken.create(refreshToken, consumer._id, expireAt);
+
 		const consumerData = consumer.toObject();
 		delete consumerData.password;
+
 		res.status(201).json({
 			message: 'Consumer registered successfully',
-			consumerData,
+			accessToken,
 		});
 	} catch (error) {
 		console.log(error.message);
@@ -77,13 +89,18 @@ const loginConsumer = async (req, res) => {
 				.json({ message: 'Invalid email or password' });
 		}
 
-		req.session.name = consumer.name;
+		const accessToken = generateJWTauthToken(consumer.email);
+		const refreshToken = generateJWTrefreshToken(consumer.email);
+		const expireAt = new Date();
+		expireAt.setDate(expireAt.getDate() + 7);
+
+		await RefreshToken.create(refreshToken, consumer._id, expireAt);
 
 		const consumerData = consumer.toObject();
 		delete consumerData.password;
 		res.status(200).json({
 			message: 'Logged in successfully',
-			consumerData,
+			accessToken,
 		});
 	} catch (error) {
 		console.log(error.message);
