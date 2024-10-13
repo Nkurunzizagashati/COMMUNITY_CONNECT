@@ -2,18 +2,28 @@ import express from 'express';
 import { checkSchema } from 'express-validator';
 import {
 	getAllConsumers,
+	loginConsumer,
 	registerConsumer,
 } from '../controllers/consumer.js';
-import { createConsumerValidator } from '../middlewares/consumerValidator.js';
+import {
+	createConsumerValidator,
+	loginConsumerValidator,
+} from '../middlewares/consumerValidator.js';
 
 const router = express.Router();
 
-router.get('/users', getAllConsumers);
+router.get('/', getAllConsumers);
 
 router.post(
 	'/register',
 	checkSchema(createConsumerValidator),
 	registerConsumer
+);
+
+router.post(
+	'/login',
+	checkSchema(loginConsumerValidator),
+	loginConsumer
 );
 
 router.get('/:id', (req, res) => {

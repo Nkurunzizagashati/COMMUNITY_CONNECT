@@ -16,8 +16,6 @@ const getAllConsumers = async (req, res) => {
 	}
 };
 
-const getUserById = async (req, res) => {};
-
 const registerConsumer = async (req, res) => {
 	try {
 		const result = validationResult(req);
@@ -35,6 +33,9 @@ const registerConsumer = async (req, res) => {
 
 		// REGISTER CONSUMER
 		const consumer = await Consumer.create(data);
+		// STORE SESSION
+
+		req.session.name = consumer.name;
 		const consumerData = consumer.toObject();
 		delete consumerData.password;
 		res.status(201).json({
@@ -65,7 +66,7 @@ const loginConsumer = async (req, res) => {
 			return res.status(404).json({ message: 'User not found' });
 		}
 
-		const passwordsMatch = comparePasswords(
+		const passwordsMatch = await comparePasswords(
 			password,
 			consumer.password
 		);
@@ -75,6 +76,8 @@ const loginConsumer = async (req, res) => {
 				.status(401)
 				.json({ message: 'Invalid email or password' });
 		}
+
+		req.session.name = consumer.name;
 
 		const consumerData = consumer.toObject();
 		delete consumerData.password;
@@ -90,4 +93,4 @@ const loginConsumer = async (req, res) => {
 	}
 };
 
-export { getAllConsumers, registerConsumer };
+export { getAllConsumers, registerConsumer, loginConsumer };
