@@ -1,33 +1,34 @@
-
-import { BrowserRouter, useRoutes } from 'react-router-dom';
+import React from 'react';
+import {
+	BrowserRouter as Router,
+	Routes,
+	Route,
+} from 'react-router-dom';
+import Navbar from './components/Navbar';
+import Home from './pages/Home';
 import Login from './pages/Login';
-import Users from './pages/Users';
-import Register from './pages/Register';
-
-const RoutesComponent = () => {
-	const routes = [
-		{
-			path: '/login',
-			element: <Login />,
-		},
-		{
-			path: '/register',
-			element: <Register />,
-		},
-		{
-			path: '/users',
-			element: <Users />,
-		},
-	];
-
-	return useRoutes(routes);
-};
+import Signup from './pages/Signup';
+import Profile from './pages/Profile';
+import CreateProfile from './pages/TempoProfile';
+import ProfileList from './pages/ProfileList';
 
 const App = () => {
 	return (
-		<BrowserRouter>
-			<RoutesComponent />
-		</BrowserRouter>
+		<Router>
+			<Navbar />
+			<Routes>
+				<Route path="/" element={<Home />} />
+				<Route path="/login" element={<Login />} />
+				<Route path="/signup" element={<Signup />} />
+				<Route path="/profile" element={<Profile />} />
+				<Route
+					path="/create-profile"
+					element={<CreateProfile />}
+				/>
+				<Route path="/profile-list" element={<ProfileList />} />
+			</Routes>
+		</Router>
 	);
 };
+
 export default App;
