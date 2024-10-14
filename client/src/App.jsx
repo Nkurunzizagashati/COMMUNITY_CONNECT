@@ -1,22 +1,16 @@
-import React from 'react';
-import {
-	BrowserRouter as Router,
-	Routes,
-	Route,
-} from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { Outlet } from 'react-router-dom';
 import Navbar from './components/Navbar';
-import Home from './pages/Home';
-import Login from './pages/Login';
-import Signup from './pages/Signup';
-import Profile from './pages/Profile';
-import CreateProfile from './pages/TempoProfile';
-import ProfileList from './pages/ProfileList';
+import ServicesLoader from './utils/ServicesLoader';
+import Footer from './components/Footer';
 
 const App = () => {
 	return (
 		<>
+			<ServicesLoader />
 			<Navbar />
-			<Home />
+			<Outlet />
+			<Footer />
 		</>
 	);
 };

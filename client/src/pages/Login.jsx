@@ -58,6 +58,7 @@ const LoginContainer = styled.div`
 	flex-direction: column;
 	align-items: center;
 	padding: 50px;
+	margin-top: 7rem;
 
 	form {
 		display: flex;

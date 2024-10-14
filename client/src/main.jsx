@@ -11,23 +11,31 @@ import Login from './pages/Login';
 import Signup from './pages/Signup';
 import { Provider } from 'react-redux';
 import { store } from './redux/store';
+import useFetchServices from './redux/actions';
+import Home from './pages/Home';
 
 const router = createBrowserRouter([
 	{
 		path: '/',
 		element: <App />,
-	},
-	{
-		path: 'login',
-		element: <Login />,
-	},
-	{
-		path: 'register',
-		element: <Signup />,
-	},
-	{
-		path: '/about',
-		element: <div>About</div>,
+		children: [
+			{
+				path: 'login',
+				element: <Login />,
+			},
+			{
+				path: '',
+				element: <Home />,
+			},
+			{
+				path: 'register',
+				element: <Signup />,
+			},
+			{
+				path: '/about',
+				element: <div>About</div>,
+			},
+		],
 	},
 ]);
 

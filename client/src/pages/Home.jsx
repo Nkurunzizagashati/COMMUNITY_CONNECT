@@ -1,47 +1,63 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
+import { useSelector } from 'react-redux';
 import ServiceCard from '../components/ServiceCard';
+import Modal from '../components/ServiceModel';
 
-const Home = () => (
-	<HomeContainer>
-		<HeroSection>
-			<h1>Discover Local Services in Your Community</h1>
-			<p>
-				Book appointments with top-rated artisans, service
-				providers, and businesses.
-			</p>
-			<SearchBar placeholder="Search services (e.g. plumber, electrician)" />
-		</HeroSection>
+const Home = () => {
+	const [selectedService, setSelectedService] = useState(null); // State to manage selected service
+	const services = useSelector(
+		(state) => state.services?.data.services || []
+	);
 
-		<ServiceSection>
-			<h2>Featured Services</h2>
-			<ServiceGrid>
-				<ServiceCard
-					title="Plumbing"
-					description="Expert plumbing services for your home."
-					price="50"
-					imageUrl="/plumbing.jpg"
+	const handleServiceClick = (service) => {
+		setSelectedService(service); // Set the selected service on click
+	};
+
+	const handleCloseModal = () => {
+		setSelectedService(null); // Close modal
+	};
+
+	return (
+		<HomeContainer>
+			<HeroSection>
+				<h1>Discover Local Services in Your Community</h1>
+				<p>
+					Book appointments with top-rated artisans, service
+					providers, and businesses.
+				</p>
+				<SearchBar placeholder="Search services (e.g. plumber, electrician)" />
+			</HeroSection>
+			<ServiceSection>
+				<h2>Featured Services</h2>
+				<ServiceGrid>
+					{/* Map over the services and render ServiceCard for each */}
+					{services?.map((service) => (
+						<ServiceCard
+							key={service._id}
+							title={service.title}
+							description={service.description}
+							price={service.price}
+							imageUrl={service.images[0]}
+							onClick={() => handleServiceClick(service)} // Show modal on click
+						/>
+					))}
+				</ServiceGrid>
+			</ServiceSection>
+			{selectedService && (
+				<Modal
+					service={selectedService}
+					onClose={handleCloseModal}
 				/>
-				<ServiceCard
-					title="Electrician"
-					description="Certified electricians for repairs."
-					price="75"
-					imageUrl="/electrician.jpg"
-				/>
-				<ServiceCard
-					title="Hair Salon"
-					description="Get styled by the best."
-					price="80"
-					imageUrl="/salon.jpg"
-				/>
-				{/* Add more service cards */}
-			</ServiceGrid>
-		</ServiceSection>
-	</HomeContainer>
-);
+			)}{' '}
+			{/* Show modal if a service is selected */}
+		</HomeContainer>
+	);
+};
 
 export default Home;
 
+// Styled components remain the same
 const HomeContainer = styled.div`
 	max-width: 1200px;
 	margin: 0 auto;
