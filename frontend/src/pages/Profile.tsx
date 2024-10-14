@@ -1,10 +1,14 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
+import React, { useEffect, useState } from 'react';
 
 const Profile = () => {
-  const profiles = useSelector((state: any) => state.profile?.profiles || []);
+  const [profiles, setProfiles] = useState<any[]>([]);
 
-  console.log('Profiles in Redux:', profiles); // Debugging
+  useEffect(() => {
+    // Retrieve profiles from localStorage
+    const storedProfiles = JSON.parse(localStorage.getItem('profiles') || '[]');
+    setProfiles(storedProfiles);
+    console.log('Profiles in localStorage:', storedProfiles);  // Debugging
+  }, []);
 
   if (profiles.length === 0) {
     return <p>No profiles found.</p>;
@@ -22,6 +26,7 @@ const Profile = () => {
               <li key={i}>{service.title} - {service.description} (${service.price})</li>
             ))}
           </ul>
+          <p>Availability: {profile.availability.join(', ')}</p>
         </div>
       ))}
     </div>

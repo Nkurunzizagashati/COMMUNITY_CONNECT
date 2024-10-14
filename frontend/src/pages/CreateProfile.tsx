@@ -1,13 +1,11 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { createProfile } from '../redux/profileSlice'; // Ensure the import is correct
 
 const CreateProfile = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [service, setService] = useState('');
   const [availability, setAvailability] = useState('');
-  const dispatch = useDispatch();
+  const [pricing, setPricing] = useState<number>(0);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -15,20 +13,23 @@ const CreateProfile = () => {
     const newProfile = {
       name,
       email,
-      services: [{ title: service, description: `${service} description`, price: 100 }],
+      services: [{ title: service, description: `${service} description`, price: pricing }],
       availability: [availability],
     };
 
-    console.log('Submitting profile:', newProfile); // Debugging
+    // Retrieve existing profiles from localStorage
+    const profiles = JSON.parse(localStorage.getItem('profiles') || '[]');
+    profiles.push(newProfile);
 
-    // Dispatch the action to create the profile
-    dispatch(createProfile(newProfile));
+    // Store updated profiles back to localStorage
+    localStorage.setItem('profiles', JSON.stringify(profiles));
 
-    // Clear the form fields after submission
+    // Clear form fields
     setName('');
     setEmail('');
     setService('');
     setAvailability('');
+    setPricing(0);
   };
 
   return (
@@ -61,6 +62,13 @@ const CreateProfile = () => {
           placeholder="Availability"
           value={availability}
           onChange={(e) => setAvailability(e.target.value)}
+          required
+        />
+        <input
+          type="number"
+          placeholder="Pricing"
+          value={pricing}
+          onChange={(e) => setPricing(parseFloat(e.target.value))}
           required
         />
         <button type="submit">Create Profile</button>

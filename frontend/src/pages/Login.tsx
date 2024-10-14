@@ -1,83 +1,100 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { login } from '../redux/userSlice';
 import styled from 'styled-components';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const navigate = useNavigate();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  const handleLogin = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const response = await fetch('/api/login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password }),
-    });
-
-    if (response.ok) {
-      const user = await response.json();
-      dispatch(login(user));
-      navigate('/profile');
-    } else {
-      alert('Failed to login');
-    }
+    dispatch(login({ email, password }));
+    navigate('/profile');
   };
 
   return (
-    <LoginContainer>
-      <h1>Login</h1>
-      <form onSubmit={handleLogin}>
-        <input
+    <StyledSlideContainer>
+      <StyledForm onSubmit={handleSubmit}>
+        <StyledInput
           type="email"
           placeholder="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
         />
-        <input
+        <StyledInput
           type="password"
           placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
         />
-        <button type="submit">Login</button>
-      </form>
-    </LoginContainer>
+        <StyledButton type="submit">Login</StyledButton>
+      </StyledForm>
+    </StyledSlideContainer>
   );
 };
 
 export default Login;
 
-const LoginContainer = styled.div`
+// Styled components for the login form
+
+const StyledSlideContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f4f4f9;
+  animation: slide-in 0.5s ease-in-out;
+
+  @keyframes slide-in {
+    0% {
+      transform: translateX(-100%);
+    }
+    100% {
+      transform: translateX(0);
+    }
+  }
+`;
+
+const StyledForm = styled.form`
   display: flex;
   flex-direction: column;
-  align-items: center;
-  padding: 50px;
+  width: 300px;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  background-color: white;
+`;
 
-  form {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+const StyledInput = styled.input`
+  margin-bottom: 15px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+  outline: none;
+
+  &:focus {
+    border-color: #ff6666;
   }
+`;
 
-  input {
-    padding: 10px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    width: 250px;
-  }
+const StyledButton = styled.button`
+  padding: 10px 15px;
+  background-color: #ff6666;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
 
-  button {
-    padding: 10px 20px;
-    background-color: #ff5a5f;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
+  &:hover {
+    background-color: #ff4c4c;
   }
 `;

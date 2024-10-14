@@ -1,11 +1,11 @@
+// redux/store.ts
 import { configureStore } from '@reduxjs/toolkit';
+import profileReducer from './profileSlice'; // Ensure correct import
 import userReducer from './userSlice';
-import profileReducer from './profileSlice';
 
 export const store = configureStore({
   reducer: {
     user: userReducer,
-    rofile: profileReducer, // Add the profile reducer
+    profile: profileReducer,
   },
 });
-

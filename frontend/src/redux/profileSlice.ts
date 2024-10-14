@@ -13,20 +13,17 @@ interface Profile {
   availability: string[];
 }
 
-interface ProfileState {
-  profiles: Profile[];
-}
-
-const initialState: ProfileState = {
-  profiles: [], // Empty array initially
+const initialState: { profiles: Profile[] } = {
+  profiles: [],
 };
 
 const profileSlice = createSlice({
   name: 'profile',
   initialState,
   reducers: {
-    createProfile(state, action: PayloadAction<Profile>) {
-      state.profiles.push(action.payload); // Add new profile
+    createProfile: (state, action: PayloadAction<Profile>) => {
+      console.log('Profile being added:', action.payload);
+      state.profiles.push(action.payload); // Add profile to state
     },
   },
 });
