@@ -7,6 +7,8 @@ import {
 } from '../utils/authTokens.js';
 import RefreshToken from '../models/token.js';
 import { cloudinaryFileUpload } from '../utils/cloudinary.js';
+import fs from 'fs';
+import path from 'path';
 
 const getAllConsumers = async (req, res) => {
 	try {
@@ -34,16 +36,31 @@ const registerConsumer = async (req, res) => {
 		const data = matchedData(req);
 		const password = data.password;
 
-		// UPLOAD TO CLOUDINARY AND STORE IMAGE URL
-		if (data.profileImage) {
-			const localPath = `public/images/document/${data.profileImage.filename}`;
-			const profileImageUrl = await cloudinaryFileUpload(
-				localPath,
-				'consumer_profile_images'
-			);
+		// Check for existing email
+		const existingConsumer = await Consumer.findOne({
+			email: data.email,
+		});
+		if (existingConsumer) {
+			return res
+				.status(400)
+				.json({ message: 'Email already registered' });
+		}
 
-			data.profileImage = profileImageUrl.url;
-			fs.unlinkSync(localPath);
+		// Check if profile image exists in request
+		if (req.file) {
+			const profileImage = await cloudinaryFileUpload(
+				req.file,
+				'consumer_profile_images',
+				res
+			);
+			data.profileImage = profileImage.url;
+
+			// Delete the local file after successful upload
+			fs.unlink(req.file.path, (err) => {
+				if (err) {
+					console.error('Failed to delete local file:', err);
+				}
+			});
 		}
 
 		const hashedPassword = await hashPassword(password);
@@ -51,14 +68,22 @@ const registerConsumer = async (req, res) => {
 
 		// REGISTER CONSUMER
 		const consumer = await Consumer.create(data);
-		const accessToken = generateJWTauthToken(consumer.email);
 
 		// GENERATE TOKENS
-		const refreshToken = generateJWTrefreshToken(consumer.email);
-		const expireAt = new Date();
-		expireAt.setDate(expireAt.getDate() + 7);
+		const accessToken = generateJWTauthToken({
+			email: consumer.email,
+		});
+		const refreshToken = generateJWTrefreshToken({
+			email: consumer.email,
+		});
+		const expiresAt = new Date();
+		expiresAt.setDate(expiresAt.getDate() + 7);
 
-		await RefreshToken.create(refreshToken, consumer._id, expireAt);
+		await RefreshToken.create({
+			token: refreshToken,
+			userId: consumer._id,
+			expiresAt,
+		});
 
 		const consumerData = consumer.toObject();
 		delete consumerData.password;
@@ -66,9 +91,10 @@ const registerConsumer = async (req, res) => {
 		res.status(201).json({
 			message: 'Consumer registered successfully',
 			accessToken,
+			profileImage: data.profileImage,
 		});
 	} catch (error) {
-		console.log(error.message);
+		console.error('Error in registration:', error.message);
 		return res
 			.status(500)
 			.json({ message: 'Something went wrong' });

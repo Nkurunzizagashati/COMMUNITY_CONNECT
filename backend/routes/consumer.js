@@ -9,13 +9,15 @@ import {
 	createConsumerValidator,
 	loginConsumerValidator,
 } from '../middlewares/consumerValidator.js';
+import { multerUpload } from '../utils/multer.js';
 
 const router = express.Router();
 
-router.get('/', getAllConsumers);
+const upload = multerUpload();
 
 router.post(
 	'/register',
+	upload.single('profileImage'),
 	checkSchema(createConsumerValidator),
 	registerConsumer
 );
@@ -25,17 +27,5 @@ router.post(
 	checkSchema(loginConsumerValidator),
 	loginConsumer
 );
-
-router.get('/:id', (req, res) => {
-	res.json({ message: 'GET user by ID route' });
-});
-
-router.put('/:id', (req, res) => {
-	res.json({ message: 'PUT user by ID route' });
-});
-
-router.delete('/:id', (req, res) => {
-	res.json({ message: 'DELETE user by ID route' });
-});
 
 export default router;

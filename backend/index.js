@@ -3,7 +3,6 @@ import dotenv from 'dotenv';
 import connectDB from './utils/db.js';
 import routes from './routes/index.js';
 import cookieParser from 'cookie-parser';
-import session from 'express-session';
 import bodyParser from 'body-parser';
 import cors from 'cors';
 
@@ -14,24 +13,16 @@ const app = express();
 // Middleware to parse JSON request bodies
 
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(
 	cors({
-		origin: ['http://localhost:5713'],
+		origin: ['http://localhost:5173'],
 		credentials: true,
 		methods: ['GET', 'POST', 'PUT', 'DELETE'],
 	})
 );
-
-// app.use(
-// 	session({
-// 		secret: process.env.SESSION_SECRET,
-// 		resave: false,
-// 		saveUninitialized: false,
-// 		cookie: { secure: false, maxAge: 3600 * 24 * 60 * 60 },
-// 	})
-// );
 
 // Connect to MongoDB
 
