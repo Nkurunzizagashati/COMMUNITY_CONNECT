@@ -1,7 +1,10 @@
 import jwt from 'jsonwebtoken';
 import { matchedData, validationResult } from 'express-validator';
-import { RefreshToken } from '../models/RefreshToken';
-import Service from '../models/service';
+import RefreshToken from '../models/token.js';
+import Service from '../models/service.js';
+import { cloudinaryFileUpload } from '../utils/cloudinary.js';
+import fs from 'fs';
+import Provider from '../models/provider.js';
 
 const createService = async (req, res) => {
 	try {
@@ -61,6 +64,41 @@ const createService = async (req, res) => {
 			}
 		}
 
+		const isAuthorized = await Provider.findById(data.provider);
+
+		if (!isAuthorized) {
+			return res.status(403).json({ message: 'Not authorized' });
+		}
+
+		// Check if images exist in the request
+		if (req.files && req.files.length > 0) {
+			// Array to hold the URLs of uploaded images
+			const images = [];
+
+			// Upload each file to Cloudinary and store the URL
+			for (const file of req.files) {
+				const uploadedImage = await cloudinaryFileUpload(
+					file,
+					`${isAuthorized.email}/images`,
+					res
+				);
+				images.push(uploadedImage.url);
+
+				// Delete the local file after successful upload
+				fs.unlink(file.path, (err) => {
+					if (err) {
+						console.error(
+							'Failed to delete local file:',
+							err
+						);
+					}
+				});
+			}
+
+			// Save the array of image URLs in the data object
+			data.images = images;
+		}
+
 		const createdService = await Service.create(data);
 
 		res.status(200).json({
@@ -92,4 +130,4 @@ const getAllServices = async (req, res) => {
 	}
 };
 
-export { createService };
+export { createService, getAllServices };
