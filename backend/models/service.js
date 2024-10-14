@@ -22,6 +22,10 @@ const serviceSchema = new Schema({
 		type: String, // e.g., 'Plumber', 'Electrician', 'Handyman'
 		required: true,
 	},
+	images: {
+		type: [String],
+		default: [],
+	},
 	createdAt: {
 		type: Date,
 		default: Date.now,

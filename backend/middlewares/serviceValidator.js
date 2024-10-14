@@ -39,6 +39,17 @@ const createServiceValidator = {
 			errorMessage: 'Category should be a string',
 		},
 	},
+	images: {
+		optional: { options: { nullable: true } },
+		isArray: {
+			errorMessage: 'Images should be an array',
+		},
+		custom: {
+			options: (value) =>
+				value.every((img) => typeof img === 'string'),
+			errorMessage: 'Each image should be a string (URL or path)',
+		},
+	},
 };
 
 const deleteServiceValidator = {
@@ -88,6 +99,17 @@ const updateServiceValidator = {
 		},
 		isString: {
 			errorMessage: 'Category should be a string',
+		},
+	},
+	images: {
+		optional: { options: { nullable: true } },
+		isArray: {
+			errorMessage: 'Images should be an array',
+		},
+		custom: {
+			options: (value) =>
+				value.every((img) => typeof img === 'string'),
+			errorMessage: 'Each image should be a string (URL or path)',
 		},
 	},
 };
