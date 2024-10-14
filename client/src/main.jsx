@@ -9,6 +9,8 @@ import {
 import App from './App';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
+import { Provider } from 'react-redux';
+import { store } from './redux/store';
 
 const router = createBrowserRouter([
 	{
@@ -23,8 +25,14 @@ const router = createBrowserRouter([
 		path: 'register',
 		element: <Signup />,
 	},
+	{
+		path: '/about',
+		element: <div>About</div>,
+	},
 ]);
 
 createRoot(document.getElementById('root')).render(
-	<RouterProvider router={router} />
+	<Provider store={store}>
+		<RouterProvider router={router} />
+	</Provider>
 );
