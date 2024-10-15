@@ -1,24 +1,38 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import { FaHome, FaUserCircle, FaSignInAlt } from 'react-icons/fa'; // Importing icons
+import { FaHome, FaUserCircle, FaSignInAlt } from 'react-icons/fa';
+import { useSelector } from 'react-redux';
 
-const Navbar = () => (
-	<Nav>
-		<Logo>Community Connect</Logo>
-		<Menu>
-			<StyledLink to="/">
-				<FaHome /> Home
-			</StyledLink>
-			<StyledLink to="/profile">
-				<FaUserCircle /> Profile
-			</StyledLink>
-			<StyledLink to="/login">
-				<FaSignInAlt /> Login
-			</StyledLink>
-		</Menu>
-	</Nav>
-);
+const Navbar = () => {
+	// Get the authenticated user from the Redux store
+	const user = useSelector((state) => state.authUser?.user);
+
+	return (
+		<Nav>
+			<Logo>Community Connect</Logo>
+			<Menu>
+				<StyledLink to="/">
+					<FaHome /> Home
+				</StyledLink>
+				{user ? (
+					// If user exists, show the Profile link
+					<StyledLink to="/profile">
+						<FaUserCircle /> {user.name}
+					</StyledLink>
+				) : (
+					// If no user, display plain text for Profile
+					<DisabledLink>
+						<FaUserCircle /> Profile
+					</DisabledLink>
+				)}
+				<StyledLink to={user ? '/logout' : '/login'}>
+					<FaSignInAlt /> {user ? 'Logout' : 'Login'}
+				</StyledLink>
+			</Menu>
+		</Nav>
+	);
+};
 
 export default Navbar;
 
@@ -62,5 +76,19 @@ const StyledLink = styled(Link)`
 
 	svg {
 		margin-right: 5px; /* Space between icon and text */
+	}
+`;
+
+const DisabledLink = styled.span`
+	display: flex;
+	align-items: center;
+	margin: 0 15px;
+	font-size: 18px;
+	font-weight: 500;
+	color: #999;
+	cursor: not-allowed;
+
+	svg {
+		margin-right: 5px;
 	}
 `;

@@ -4,12 +4,12 @@ import { Schema } from 'mongoose';
 const reviewSchema = new Schema({
 	consumer: {
 		type: Schema.Types.ObjectId,
-		ref: 'User', // Links to the consumer leaving the review
+		ref: 'Consumer', // Links to the consumer leaving the review
 		required: true,
 	},
 	provider: {
 		type: Schema.Types.ObjectId,
-		ref: 'User', // Links to the service provider
+		ref: 'Provider', // Links to the service provider
 		required: true,
 	},
 	service: {

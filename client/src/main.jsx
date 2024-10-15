@@ -13,6 +13,7 @@ import { Provider } from 'react-redux';
 import { store } from './redux/store';
 import useFetchServices from './redux/actions';
 import Home from './pages/Home';
+import ProfilePage from './pages/Profile';
 
 const router = createBrowserRouter([
 	{
@@ -32,8 +33,8 @@ const router = createBrowserRouter([
 				element: <Signup />,
 			},
 			{
-				path: '/about',
-				element: <div>About</div>,
+				path: '/profile',
+				element: <ProfilePage />,
 			},
 		],
 	},

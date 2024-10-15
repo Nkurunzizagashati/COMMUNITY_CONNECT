@@ -148,6 +148,7 @@ const loginConsumer = async (req, res) => {
 		res.status(200).json({
 			message: 'Logged in successfully',
 			accessToken,
+			user: consumerData,
 		});
 	} catch (error) {
 		console.log(error.message);

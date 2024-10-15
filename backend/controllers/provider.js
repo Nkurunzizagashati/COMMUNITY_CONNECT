@@ -84,7 +84,11 @@ const registerProvider = async (req, res) => {
 			expiresAt,
 		});
 
-		const providerData = provider.toObject();
+		const populatedProvider = await Provider.findById(provider._id)
+			.populate('services')
+			.populate('reviews');
+
+		const providerData = populatedProvider.toObject();
 		delete providerData.password;
 
 		res.status(201).json({
@@ -101,6 +105,7 @@ const registerProvider = async (req, res) => {
 };
 
 const loginProvider = async (req, res) => {
+	console.log(req.body);
 	try {
 		const result = validationResult(req);
 		if (!result.isEmpty()) {
@@ -144,11 +149,16 @@ const loginProvider = async (req, res) => {
 			expiresAt,
 		});
 
-		const providerData = provider.toObject();
+		const populatedProvider = await Provider.findById(
+			provider._id
+		).populate('services');
+
+		const providerData = populatedProvider.toObject();
 		delete providerData.password;
 		res.status(200).json({
 			message: 'Logged in successfully',
 			accessToken,
+			user: providerData,
 		});
 	} catch (error) {
 		console.log(error.message);
