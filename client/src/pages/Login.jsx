@@ -8,6 +8,7 @@ import {
 } from '../redux/authSlice';
 import axios from 'axios';
 import styled from 'styled-components';
+import LoginRegisterOption from '../components/LoginRegisterOption';
 
 const Login = () => {
 	const [email, setEmail] = useState('');
@@ -83,12 +84,10 @@ const Login = () => {
 				</button>
 			</form>
 
-			<RegisterOption>
-				<p>
-					Don't have an account?{' '}
-					<Link to="/register">Register now</Link>
-				</p>
-			</RegisterOption>
+			<LoginRegisterOption
+				message="Don't have an account"
+				link="register"
+			/>
 		</LoginContainer>
 	);
 };
@@ -120,7 +119,7 @@ const LoginContainer = styled.div`
 		padding: 10px;
 		border-radius: 5px;
 		border: 1px solid #ccc;
-		width: 250px;
+		width: 100%;
 	}
 
 	button {
@@ -133,24 +132,6 @@ const LoginContainer = styled.div`
 
 		&:disabled {
 			background-color: #ccc;
-		}
-	}
-`;
-
-const RegisterOption = styled.div`
-	margin-top: 20px;
-
-	p {
-		font-size: 1rem;
-		color: #555;
-
-		a {
-			color: #007bff;
-			text-decoration: none;
-
-			&:hover {
-				text-decoration: underline;
-			}
 		}
 	}
 `;

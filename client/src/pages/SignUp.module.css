@@ -1,0 +1,36 @@
+.signupContainer {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	padding: 50px;
+	margin-top: 7rem;
+}
+
+form {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+
+input {
+	padding: 10px;
+	border-radius: 5px;
+	border: 1px solid #ccc;
+	width: 250px;
+}
+
+select {
+	padding: 10px;
+	border-radius: 5px;
+	border: 1px solid #ccc;
+	width: 100%;
+}
+
+button {
+	padding: 10px 20px;
+	background-color: #ff5a5f;
+	color: white;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+}
