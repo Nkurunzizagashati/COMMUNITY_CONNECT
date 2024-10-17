@@ -49,7 +49,7 @@ const Login = () => {
 		} catch (error) {
 			dispatch(loginFailure(error.message));
 		} finally {
-			setIsLoading(false); // Stop loading
+			setIsLoading(false);
 		}
 	};
 

@@ -4,6 +4,12 @@ import styled from 'styled-components';
 import axios from 'axios';
 import variables from '../config';
 import LoginRegisterOption from '../components/LoginRegisterOption';
+import { useDispatch } from 'react-redux';
+import {
+	registerStart,
+	registerSuccess,
+	registerFailure,
+} from '../redux/authSlice';
 
 const Signup = () => {
 	const [name, setName] = useState('');
@@ -14,6 +20,8 @@ const Signup = () => {
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState('');
 	const navigate = useNavigate();
+
+	const dispatch = useDispatch();
 
 	const handleSignup = async (e) => {
 		e.preventDefault();
@@ -31,21 +39,31 @@ const Signup = () => {
 			userType === 'provider' ? 'providers' : 'consumers'
 		}/register`;
 
+		dispatch(registerStart());
+
 		try {
 			const response = await axios.post(BACKEND_URL, formData, {
 				headers: { 'Content-Type': 'multipart/form-data' },
 				withCredentials: true,
 			});
 
-			if (response.status === 200) {
-				alert('Account created successfully');
-				navigate('/login');
+			if (response.status === 201) {
+				dispatch(
+					registerSuccess({
+						user: response.data.user,
+						token: response.data.accessToken,
+						message: response.data.message,
+					})
+				);
+				navigate('/');
+			} else {
+				dispatch(registerFailure(response.data.message));
+				setError(response.data.message);
+				console.log(response.message);
 			}
 		} catch (error) {
-			setError(
-				error.response?.data?.message ||
-					'Failed to create account'
-			);
+			dispatch(registerFailure(error.response.data.message));
+			setError(error.response.data.message);
 		} finally {
 			setLoading(false);
 		}

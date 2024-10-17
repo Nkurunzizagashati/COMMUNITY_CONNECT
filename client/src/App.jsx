@@ -5,6 +5,7 @@ import ServicesLoader from './utils/ServicesLoader';
 import Footer from './components/Footer';
 
 const App = () => {
+	console.log('HELLO FROM APP.JSX');
 	return (
 		<>
 			<ServicesLoader />
