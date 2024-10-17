@@ -4,24 +4,24 @@ import { Schema } from 'mongoose';
 const reviewSchema = new Schema({
 	consumer: {
 		type: Schema.Types.ObjectId,
-		ref: 'Consumer', // Links to the consumer leaving the review
+		ref: 'Consumer',
 		required: true,
 	},
 	provider: {
 		type: Schema.Types.ObjectId,
-		ref: 'Provider', // Links to the service provider
+		ref: 'Provider',
 		required: true,
 	},
 	service: {
 		type: Schema.Types.ObjectId,
-		ref: 'Service', // Links to the specific service being reviewed
+		ref: 'Service',
 		required: true,
 	},
 	rating: {
 		type: Number,
 		required: true,
 		min: 1,
-		max: 5, // Rating from 1 to 5
+		max: 5,
 	},
 	comment: {
 		type: String,

@@ -84,17 +84,17 @@ const registerProvider = async (req, res) => {
 			expiresAt,
 		});
 
-		const populatedProvider = await Provider.findById(provider._id)
-			.populate('services')
-			.populate('reviews');
+		const populatedProvider = await Provider.findById(
+			provider._id
+		).populate('services');
 
 		const providerData = populatedProvider.toObject();
 		delete providerData.password;
 
 		res.status(201).json({
 			message: 'Provider registered successfully',
-			accessToken,
-			profileImage: data.profileImage,
+			token: accessToken,
+			user: providerData,
 		});
 	} catch (error) {
 		console.error('Error in registration:', error.message);
@@ -153,11 +153,13 @@ const loginProvider = async (req, res) => {
 			provider._id
 		).populate('services');
 
+		console.log(populatedProvider);
+
 		const providerData = populatedProvider.toObject();
 		delete providerData.password;
 		res.status(200).json({
 			message: 'Logged in successfully',
-			accessToken,
+			token: accessToken,
 			user: providerData,
 		});
 	} catch (error) {

@@ -11,7 +11,7 @@ const serviceSchema = new Schema({
 	},
 	provider: {
 		type: Schema.Types.ObjectId,
-		ref: 'User', // Links to the provider (artisan or business)
+		ref: 'Provider',
 		required: true,
 	},
 	price: {
@@ -19,7 +19,7 @@ const serviceSchema = new Schema({
 		required: true,
 	},
 	category: {
-		type: String, // e.g., 'Plumber', 'Electrician', 'Handyman'
+		type: String,
 		required: true,
 	},
 	images: {

@@ -1,7 +1,6 @@
 import mongoose from 'mongoose';
-import { Schema } from 'mongoose';
 
-const providerSchema = new Schema({
+const providerSchema = new mongoose.Schema({
 	name: {
 		type: String,
 		required: true,
@@ -20,20 +19,24 @@ const providerSchema = new Schema({
 	},
 	services: [
 		{
-			type: Schema.Types.ObjectId,
-			ref: 'Service', // Links to services they offer
+			type: mongoose.Schema.Types.ObjectId,
+			ref: 'Service',
 		},
 	],
 	availability: {
-		type: Map, // A map where key is the day of the week and value is an array of available time slots
+		type: Map,
 		of: [String],
 	},
 	reviews: [
 		{
-			type: Schema.Types.ObjectId,
-			ref: 'Review', // Reviews for this provider
+			type: mongoose.Schema.Types.ObjectId,
+			ref: 'Review',
 		},
 	],
+	userType: {
+		type: String,
+		default: 'provider',
+	},
 	createdAt: {
 		type: Date,
 		default: Date.now,

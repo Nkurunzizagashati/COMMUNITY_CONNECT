@@ -101,6 +101,10 @@ const createService = async (req, res) => {
 
 		const createdService = await Service.create(data);
 
+		await Provider.findByIdAndUpdate(data.provider, {
+			$push: { services: createdService._id },
+		});
+
 		res.status(200).json({
 			message: 'Service created successfully',
 			accessToken,
@@ -115,7 +119,7 @@ const createService = async (req, res) => {
 
 const getAllServices = async (req, res) => {
 	try {
-		const services = await Service.find();
+		const services = await Service.find().populate('provider');
 		if (services.length === 0) {
 			return res
 				.status(404)
@@ -124,6 +128,7 @@ const getAllServices = async (req, res) => {
 
 		return res.status(200).json({ services });
 	} catch (error) {
+		console.log(error.message);
 		return res
 			.status(500)
 			.json({ message: 'Something went wrong' });

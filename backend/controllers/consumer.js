@@ -90,8 +90,8 @@ const registerConsumer = async (req, res) => {
 
 		res.status(201).json({
 			message: 'Consumer registered successfully',
-			accessToken,
-			profileImage: data.profileImage,
+			token: accessToken,
+			user: consumerData,
 		});
 	} catch (error) {
 		console.error('Error in registration:', error.message);
@@ -147,7 +147,7 @@ const loginConsumer = async (req, res) => {
 		delete consumerData.password;
 		res.status(200).json({
 			message: 'Logged in successfully',
-			accessToken,
+			token: accessToken,
 			user: consumerData,
 		});
 	} catch (error) {

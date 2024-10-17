@@ -24,6 +24,10 @@ const consumerSchema = new Schema({
 			ref: 'Review', // Links to reviews left by this user
 		},
 	],
+	userType: {
+		type: String,
+		default: 'consumer',
+	},
 	createdAt: {
 		type: Date,
 		default: Date.now,
