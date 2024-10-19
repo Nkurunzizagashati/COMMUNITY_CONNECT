@@ -1,13 +1,19 @@
 import { matchedData, validationResult } from 'express-validator';
-import ServiceReview from '../models/review';
+import ServiceReview from '../models/review.js';
 import jwt from 'jsonwebtoken';
-import Consumer from '../models/consumer';
+import Consumer from '../models/consumer.js';
 
 const getReviews = async (req, res) => {
-	const serviceId = req.params.serviceId;
-
 	try {
-		const reviews = await Review.find({ service: serviceId });
+		const result = validationResult(req);
+		if (!result.isEmpty()) {
+			return res
+				.status(400)
+				.json({ errors: result.array()[0].msg });
+		}
+
+		const data = matchedData(req);
+		const reviews = await Review.find({ service: data.service });
 
 		if (!reviews)
 			return res
@@ -23,8 +29,6 @@ const getReviews = async (req, res) => {
 };
 
 const addReview = async (req, res) => {
-	const serviceId = req.params.serviceId;
-
 	try {
 		const result = validationResult(req);
 
@@ -34,8 +38,6 @@ const addReview = async (req, res) => {
 				.json({ errors: result.array()[0].msg });
 
 		const data = matchedData(req);
-
-		data.service = serviceId;
 
 		const authHeader = req.headers.authorization;
 		let accessToken =
@@ -77,3 +79,5 @@ const addReview = async (req, res) => {
 			.json({ message: 'something went wrong' });
 	}
 };
+
+export { addReview, getReviews };

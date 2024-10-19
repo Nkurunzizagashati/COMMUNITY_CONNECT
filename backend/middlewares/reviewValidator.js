@@ -74,8 +74,20 @@ const updateReviewValidator = {
 	},
 };
 
+const getReviewsValidator = {
+	service: {
+		notEmpty: {
+			errorMessage: 'Service id should not be empty',
+		},
+		isString: {
+			errorMessage: 'Service id should be a string',
+		},
+	},
+};
+
 export {
 	createReviewValidator,
 	deleteReviewValidator,
 	updateReviewValidator,
+	getReviewsValidator,
 };
