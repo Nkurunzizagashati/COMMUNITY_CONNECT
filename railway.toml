@@ -1,0 +1,6 @@
+[service]
+path = "backend/"
+
+[nixpacks]
+build_cmd = "npm install"
+start_cmd = "npm start"
