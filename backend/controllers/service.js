@@ -1,6 +1,5 @@
 import jwt from 'jsonwebtoken';
 import { matchedData, validationResult } from 'express-validator';
-import RefreshToken from '../models/token.js';
 import Service from '../models/service.js';
 import { cloudinaryFileUpload } from '../utils/cloudinary.js';
 import fs from 'fs';
@@ -24,51 +23,29 @@ const createService = async (req, res) => {
 				: null;
 
 		if (!accessToken) {
-			// If no accessToken is provided, check for refreshToken
-			const refreshToken = req.cookies.refreshToken;
-
-			if (!refreshToken) {
-				return res.status(401).json({
-					message:
-						'No access token or refresh token provided',
-				});
-			}
-
-			// Verify the refresh token
-			try {
-				const decodedRefreshToken = jwt.verify(
-					refreshToken,
-					process.env.REFRESH_TOKEN_SECRET
-				);
-
-				// Find the refresh token in the database to ensure it's still valid
-				const storedToken = await RefreshToken.findOne({
-					token: refreshToken,
-				});
-				if (!storedToken) {
-					return res
-						.status(403)
-						.json({ message: 'Not authorized' });
-				}
-
-				// Generate a new accessToken
-				accessToken = generateJWTauthToken({
-					email: decodedRefreshToken.email,
-				});
-
-				res.setHeader('Authorization', `Bearer ${accessToken}`);
-			} catch (err) {
-				return res
-					.status(403)
-					.json({ message: 'Something went wrong' });
-			}
+			return res.status(401).json({
+				message: 'Not authorized',
+			});
 		}
 
-		const isAuthorized = await Provider.findById(data.provider);
+		const decodedAccessToken = jwt.decode(
+			accessToken,
+			process.env.JWT_SECRET
+		);
 
-		if (!isAuthorized) {
+		if (!decodedAccessToken) {
 			return res.status(403).json({ message: 'Not authorized' });
 		}
+
+		const provider = await Provider.findOne({
+			email: decodedAccessToken.email,
+		});
+
+		if (!provider) {
+			return res.status(403).json({ message: 'Not authorized' });
+		}
+
+		data.provider = provider._id;
 
 		// Check if images exist in the request
 		if (req.files && req.files.length > 0) {
@@ -79,7 +56,7 @@ const createService = async (req, res) => {
 			for (const file of req.files) {
 				const uploadedImage = await cloudinaryFileUpload(
 					file,
-					`${isAuthorized.email}/images`,
+					`${provider.email}/images`,
 					res
 				);
 				images.push(uploadedImage.url);
@@ -105,7 +82,7 @@ const createService = async (req, res) => {
 			$push: { services: createdService._id },
 		});
 
-		res.status(200).json({
+		return res.status(200).json({
 			message: 'Service created successfully',
 			accessToken,
 		});

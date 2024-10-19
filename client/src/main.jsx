@@ -14,6 +14,7 @@ import { store } from './redux/store';
 import useFetchServices from './redux/actions';
 import Home from './pages/Home';
 import ProfilePage from './pages/Profile';
+import CreateService from './pages/CreateService';
 
 const router = createBrowserRouter([
 	{
@@ -35,6 +36,10 @@ const router = createBrowserRouter([
 			{
 				path: '/profile',
 				element: <ProfilePage />,
+			},
+			{
+				path: '/create-service',
+				element: <CreateService />,
 			},
 		],
 	},

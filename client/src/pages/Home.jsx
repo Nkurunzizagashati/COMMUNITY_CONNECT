@@ -11,11 +11,11 @@ const Home = () => {
 	);
 
 	const handleServiceClick = (service) => {
-		setSelectedService(service); // Set the selected service on click
+		setSelectedService(service);
 	};
 
 	const handleCloseModal = () => {
-		setSelectedService(null); // Close modal
+		setSelectedService(null);
 	};
 
 	return (

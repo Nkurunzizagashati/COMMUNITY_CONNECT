@@ -55,6 +55,11 @@ const Signup = () => {
 						message: response.data.message,
 					})
 				);
+
+				localStorage.setItem(
+					'token',
+					response.data.accessToken
+				);
 				navigate('/');
 			} else {
 				dispatch(registerFailure(response.data.message));

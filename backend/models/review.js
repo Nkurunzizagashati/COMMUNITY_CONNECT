@@ -7,11 +7,6 @@ const reviewSchema = new Schema({
 		ref: 'Consumer',
 		required: true,
 	},
-	provider: {
-		type: Schema.Types.ObjectId,
-		ref: 'Provider',
-		required: true,
-	},
 	service: {
 		type: Schema.Types.ObjectId,
 		ref: 'Service',
@@ -33,6 +28,6 @@ const reviewSchema = new Schema({
 	},
 });
 
-const Review = mongoose.model('Review', reviewSchema);
+const ServiceReview = mongoose.model('Review', reviewSchema);
 
-export default Review;
+export default ServiceReview;

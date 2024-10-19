@@ -59,7 +59,7 @@ const ImageCarousel = styled.div`
 `;
 
 const Image = styled.img`
-	width: 100%;
-	height: auto;
+	max-width: 600px;
+	max-height: 350px;
 	margin-right: 10px;
 `;

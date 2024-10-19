@@ -13,14 +13,6 @@ const createServiceValidator = {
 			errorMessage: 'Description should be a string',
 		},
 	},
-	provider: {
-		notEmpty: {
-			errorMessage: 'Provider ID should not be empty',
-		},
-		isMongoId: {
-			errorMessage: 'Provider should be a valid ObjectId',
-		},
-	},
 	price: {
 		notEmpty: {
 			errorMessage: 'Price should not be empty',

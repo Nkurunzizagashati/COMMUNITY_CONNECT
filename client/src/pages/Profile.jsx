@@ -1,5 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 const ProfilePage = () => {
@@ -53,6 +54,7 @@ const ProfilePage = () => {
 						))}
 				</ServiceList>
 			</ServicesSection>
+			<Link to="/create-service">Add Service</Link>
 		</ProfileContainer>
 	);
 };

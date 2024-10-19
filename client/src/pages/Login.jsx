@@ -38,9 +38,11 @@ const Login = () => {
 				dispatch(
 					loginSuccess({
 						user: response.data.user,
-						token: response.data.accessToken,
+						token: response.data.token,
 					})
 				);
+
+				localStorage.setItem('token', response.data.token);
 				navigate('/');
 			} else {
 				alert('Login failed');
