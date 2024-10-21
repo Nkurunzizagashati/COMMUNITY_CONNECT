@@ -9,6 +9,7 @@ import {
 import axios from 'axios';
 import styled from 'styled-components';
 import LoginRegisterOption from '../components/LoginRegisterOption';
+import variables from '../config';
 
 const Login = () => {
 	const [email, setEmail] = useState('');
@@ -23,11 +24,13 @@ const Login = () => {
 		dispatch(loginStart());
 		setIsLoading(true); // Start loading
 
+		const BackendURL = variables.backendUrl;
+
 		try {
 			const response = await axios.post(
 				loginAs === 'provider'
-					? 'http://localhost:3001/api/providers/login'
-					: 'http://localhost:3001/api/consumers/login',
+					? `${BackendURL}/providers/login`
+					: `${BackendURL}/consumers/login`,
 				{
 					email,
 					password,
