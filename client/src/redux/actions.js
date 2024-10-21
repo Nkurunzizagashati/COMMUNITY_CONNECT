@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import axios from 'axios';
 import { setPending, setServices, setError } from './serviceSlice';
 import { loginStart, loginSuccess, loginFailure } from './authSlice';
+import variables from '../config';
 
 const useFetchServices = () => {
 	const dispatch = useDispatch();
@@ -11,10 +12,9 @@ const useFetchServices = () => {
 		const fetchServices = async () => {
 			try {
 				dispatch(setPending());
+				const BACKEND_URL = `${variables.backendUrl}/services`;
 
-				const response = await axios.get(
-					'http://localhost:3001/api/services'
-				);
+				const response = await axios.get(BACKEND_URL);
 
 				if (response.status === 200) {
 					dispatch(setServices(response.data));
@@ -43,10 +43,8 @@ const LoginUser = async (credentials) => {
 	// Check if logging in as provider
 	if (credentials.logginAs === 'provider') {
 		try {
-			const response = await axios.post(
-				'http://localhost:3001/api/providers/login',
-				credentials
-			);
+			const BACKEND_URL = `${variables.backendUrl}proviers/login`;
+			const response = await axios.post(BACKEND_URL, credentials);
 			if (response.status === 200) {
 				dispatch(
 					loginSuccess({
@@ -65,10 +63,8 @@ const LoginUser = async (credentials) => {
 
 	// Otherwise, try to log in as consumer
 	try {
-		const response = await axios.post(
-			'http://localhost:3001/api/consumers/login',
-			credentials
-		);
+		const BACKEND_URL = `${variables.backendUrl}consumers/login`;
+		const response = await axios.post(BACKEND_URL, credentials);
 
 		if (response.status === 200) {
 			dispatch(

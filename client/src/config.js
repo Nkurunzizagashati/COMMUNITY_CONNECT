@@ -1,5 +1,5 @@
 const variables = {
-	backendUrl: 'http://localhost:3001/api/',
+	backendUrl: 'https://isoko-backend.up.railway.app/api/',
 };
 
 export default variables;
