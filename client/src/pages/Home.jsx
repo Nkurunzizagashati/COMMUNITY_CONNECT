@@ -15,11 +15,11 @@ const Home = () => {
 	};
 
 	const handleCloseModal = () => {
-		setSelectedService(null);
+		selectedService && setSelectedService(null);
 	};
 
 	return (
-		<HomeContainer>
+		<HomeContainer onClick={(e) => handleCloseModal()}>
 			<HeroSection>
 				<h1>Discover Local Services in Your Community</h1>
 				<p>
@@ -35,7 +35,7 @@ const Home = () => {
 					{services?.map((service) => (
 						<ServiceCard
 							key={service._id}
-							title={service.title}
+							title={service.name}
 							description={service.description}
 							price={service.price}
 							imageUrl={service.images[0]}
@@ -44,13 +44,7 @@ const Home = () => {
 					))}
 				</ServiceGrid>
 			</ServiceSection>
-			{selectedService && (
-				<Modal
-					service={selectedService}
-					onClose={handleCloseModal}
-				/>
-			)}{' '}
-			{/* Show modal if a service is selected */}
+			{selectedService && <Modal service={selectedService} />}
 		</HomeContainer>
 	);
 };

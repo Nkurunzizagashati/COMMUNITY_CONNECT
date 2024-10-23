@@ -54,6 +54,14 @@ const authSlice = createSlice({
 			state.loading = false;
 			state.error = action.payload;
 		},
+
+		clearAuthUser: (state) => {
+			state.user = null;
+			state.token = null;
+			state.message = null;
+			state.error = null;
+			state.loading = false;
+		},
 	},
 });
 
@@ -66,6 +74,7 @@ export const {
 	registerFailure,
 	registerSuccess,
 	registerStart,
+	clearAuthUser,
 } = authSlice.actions;
 
 export default authSlice.reducer;

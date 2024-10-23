@@ -1,12 +1,44 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import { FaHome, FaUserCircle, FaSignInAlt } from 'react-icons/fa';
-import { useSelector } from 'react-redux';
+import {
+	FaHome,
+	FaUserCircle,
+	FaSignInAlt,
+	FaSignOutAlt,
+} from 'react-icons/fa';
+import { useSelector, useDispatch } from 'react-redux';
+import variables from '../config';
+import axios from 'axios';
+import { clearAuthUser } from '../redux/authSlice';
 
 const Navbar = () => {
 	// Get the authenticated user from the Redux store
+	const [loading, setLoading] = useState(false);
+
 	const user = useSelector((state) => state.authUser?.user);
+	const dispatch = useDispatch();
+
+	const handleLogout = async () => {
+		const backendUrl = `${variables.backendUrl}/logout`;
+
+		try {
+			setLoading(true);
+			const response = await axios.get(backendUrl, {
+				withCredentials: true,
+			});
+
+			if (response.status === 200) {
+				dispatch(clearAuthUser());
+				setLoading(false);
+			} else {
+				alert('something went wrong try again later');
+				setLoading(false);
+			}
+		} catch (error) {
+			alert('something went wrong try again later');
+		}
+	};
 
 	return (
 		<Nav>
@@ -26,9 +58,17 @@ const Navbar = () => {
 						<FaUserCircle /> Profile
 					</DisabledLink>
 				)}
-				<StyledLink to={user ? '/logout' : '/login'}>
-					<FaSignInAlt /> {user ? 'Logout' : 'Login'}
-				</StyledLink>
+
+				{!user ? (
+					<StyledLink to="/login">
+						<FaSignInAlt /> {user ? 'Logout' : 'Login'}
+					</StyledLink>
+				) : (
+					<span className="logoutBtn" onClick={handleLogout}>
+						<FaSignOutAlt />{' '}
+						{loading ? 'Logging out..' : 'Logout'}
+					</span>
+				)}
 			</Menu>
 		</Nav>
 	);
@@ -48,7 +88,27 @@ const Nav = styled.nav`
 	top: 0;
 	left: 0;
 	right: 0;
-	z-index: 1000; /* Ensure the navbar is on top */
+	z-index: 1000;
+
+	.logoutBtn {
+		display: flex;
+		align-items: center;
+		margin: 0 15px;
+		font-size: 18px;
+		font-weight: 500;
+		color: #333;
+		text-decoration: none;
+		transition: color 0.3s;
+
+		&:hover {
+			color: #ff5a5f;
+			cursor: pointer;
+		}
+
+		svg {
+			margin-right: 5px;
+		}
+	}
 `;
 
 const Logo = styled.h1`
@@ -57,25 +117,25 @@ const Logo = styled.h1`
 `;
 
 const Menu = styled.div`
-	display: flex; /* Use flexbox to arrange links horizontally */
+	display: flex;
 `;
 
 const StyledLink = styled(Link)`
-	display: flex; /* Display flex for icon alignment */
-	align-items: center; /* Align items vertically center */
+	display: flex;
+	align-items: center;
 	margin: 0 15px;
 	font-size: 18px;
 	font-weight: 500;
 	color: #333;
-	text-decoration: none; /* Remove underline from links */
-	transition: color 0.3s; /* Smooth color transition */
+	text-decoration: none;
+	transition: color 0.3s;
 
 	&:hover {
-		color: #ff5a5f; /* Change color on hover */
+		color: #ff5a5f;
 	}
 
 	svg {
-		margin-right: 5px; /* Space between icon and text */
+		margin-right: 5px;
 	}
 `;
 

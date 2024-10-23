@@ -5,11 +5,6 @@ import { useNavigate } from 'react-router-dom';
 import variables from '../config';
 import { useDispatch, useSelector } from 'react-redux';
 import { store } from '../redux/store';
-// import {
-// 	createServiceStart,
-// 	createServiceSuccess,
-// 	createServiceFailure,
-// } from '../redux/serviceSlice';
 
 const CreateService = () => {
 	const [name, setName] = useState('');
