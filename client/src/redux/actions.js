@@ -97,7 +97,7 @@ const useGetToken = () => {
 	const dispatch = useDispatch();
 	useEffect(() => {
 		const fetchToken = async () => {
-			const backendUrl = `${variables.backendUrl}/token`;
+			const backendUrl = `${variables.backendUrl}token`;
 			try {
 				const response = await axios.get(backendUrl, {
 					withCredentials: true,

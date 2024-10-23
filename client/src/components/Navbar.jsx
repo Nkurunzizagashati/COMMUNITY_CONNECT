@@ -20,7 +20,7 @@ const Navbar = () => {
 	const dispatch = useDispatch();
 
 	const handleLogout = async () => {
-		const backendUrl = `${variables.backendUrl}/logout`;
+		const backendUrl = `${variables.backendUrl}logout`;
 
 		try {
 			setLoading(true);
