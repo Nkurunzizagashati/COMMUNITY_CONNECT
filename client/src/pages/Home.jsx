@@ -78,22 +78,26 @@ const Home = () => {
 
 	return (
 		<HomeContainer onClick={handleCloseModal}>
-			<SearchBar
-				placeholder="Search services (e.g., plumber, electrician)"
-				onChange={handleSearch}
-			/>
-			<CategoryList>
-				{categories.map((cat) => (
-					<CategoryItem
-						key={cat.name}
-						selected={cat.name === selectedCategory}
-						onClick={() => handleCategoryClick(cat.name)}
-					>
-						<span>{cat.icon}</span>
-						<p>{cat.name}</p>
-					</CategoryItem>
-				))}
-			</CategoryList>
+			<SearchAndFilterContainer>
+				<SearchBar
+					placeholder="Search services (e.g., plumber, electrician)"
+					onChange={handleSearch}
+				/>
+				<CategoryList>
+					{categories.map((cat) => (
+						<CategoryItem
+							key={cat.name}
+							selected={cat.name === selectedCategory}
+							onClick={() =>
+								handleCategoryClick(cat.name)
+							}
+						>
+							<span>{cat.icon}</span>
+							<p>{cat.name}</p>
+						</CategoryItem>
+					))}
+				</CategoryList>
+			</SearchAndFilterContainer>
 			<HeroSection>
 				<h1>Discover Local Services in Your Community</h1>
 				<p>
@@ -135,6 +139,19 @@ const HomeContainer = styled.div`
 	}
 `;
 
+const SearchAndFilterContainer = styled.div`
+	position: sticky;
+	top: 6rem; /* Adjust according to the height of your navbar */
+	background-color: #fff;
+	z-index: 10;
+	padding: 10px 0;
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+
+	@media (max-width: 844px) {
+		top: 4rem;
+	}
+`;
+
 const SearchBar = styled.input`
 	padding: 0.8rem;
 	width: 100%;
@@ -159,6 +176,7 @@ const HeroSection = styled.div`
 	text-align: center;
 	padding: 40px 20px;
 	background-color: #f5f5f5;
+	margin-top: 1rem;
 	h1 {
 		font-size: 2rem;
 		margin-bottom: 20px;
