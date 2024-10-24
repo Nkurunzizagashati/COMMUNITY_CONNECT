@@ -146,6 +146,10 @@ const Input = styled.input`
 	border-radius: 5px;
 	border: 1px solid #ccc;
 	width: 250px;
+
+	@media (max-width: 844px) {
+		font-size: 1.2rem;
+	}
 `;
 
 const Select = styled.select`
