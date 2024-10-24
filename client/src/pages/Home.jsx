@@ -92,6 +92,10 @@ const HeroSection = styled.div`
 	h1 {
 		font-size: 2.5rem;
 		margin-bottom: 20px;
+
+		@media (max-width: 844px) {
+			font-size: 1.4rem;
+		}
 	}
 	p {
 		color: #777;
@@ -100,12 +104,21 @@ const HeroSection = styled.div`
 `;
 
 const SearchBar = styled.input`
-	padding: 15px;
-	width: 100%;
+	padding: 1rem;
+	width: 90%;
 	max-width: 600px;
 	margin-top: 20px;
 	border-radius: 8px;
 	border: 1px solid #ddd;
+
+	@media (max-width: 844px) {
+		margin-top: 1rem;
+		max-width: 80%;
+
+		&:focus {
+			outline: none;
+		}
+	}
 `;
 
 const ServiceSection = styled.div`
