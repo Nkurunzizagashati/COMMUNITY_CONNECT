@@ -6,6 +6,7 @@ import {
 	FaUserCircle,
 	FaSignInAlt,
 	FaSignOutAlt,
+	FaRegWindowClose,
 } from 'react-icons/fa';
 import { useSelector, useDispatch } from 'react-redux';
 import variables from '../config';
@@ -45,8 +46,7 @@ const Navbar = () => {
 		setShowNavbar(false);
 	};
 
-	const handShowNavbar = () => {
-		console.log('clicked');
+	const handleShowNavbar = () => {
 		setShowNavbar((prev) => !prev);
 	};
 
@@ -78,11 +78,18 @@ const Navbar = () => {
 					</span>
 				)}
 			</Menu>
-			<GiHamburgerMenu
-				className="hamburgerMenu"
-				aria-label="Toggle navigation menu"
-				onClick={handShowNavbar}
-			/>
+			{showNavbar ? (
+				<FaRegWindowClose
+					className="hamburgerMenu"
+					onClick={handleShowNavbar}
+				/>
+			) : (
+				<GiHamburgerMenu
+					className="hamburgerMenu"
+					onClick={handleShowNavbar}
+				/>
+			)}
+
 			{showNavbar && (
 				<MenuMobile className="menuMobile">
 					<MenuSmallScreens>

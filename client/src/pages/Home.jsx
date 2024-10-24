@@ -224,6 +224,11 @@ const CategoryItem = styled.div`
 		margin-top: 3px;
 		font-size: 0.8rem;
 	}
+
+	&:hover {
+		background-color: #ff385c;
+		color: #fff;
+	}
 `;
 
 const ServiceSection = styled.div`
