@@ -30,8 +30,13 @@ const Modal = ({ service }) => {
 	return (
 		<ModalOverlay>
 			<ModalContent onClick={(e) => e.stopPropagation()}>
-				<h2>{service.name}</h2>
-				<p>{service.description}</p>
+				<p className="title">
+					<b>Title: </b> {service.name}
+				</p>
+				<p>
+					<b>Description: </b>
+					{service.description}
+				</p>
 				<ServiceInfo>
 					<p className="price">Price: ${service.price}</p>
 					<div className="reviewContainer">
@@ -101,6 +106,17 @@ const ModalOverlay = styled.div`
 	display: flex;
 	justify-content: center;
 	align-items: center;
+
+	p,
+	h2 {
+		margin: 0;
+	}
+
+	.title {
+		text-transform: uppercase;
+		margin-bottom: 1rem;
+		font-weight: bold;
+	}
 `;
 
 const ModalContent = styled.div`
@@ -202,6 +218,12 @@ const ServiceInfo = styled.div`
 		align-items: center;
 		gap: 1rem;
 		font-weight: bold;
+	}
+
+	@media (max-width: 768px) {
+		flex-direction: column;
+		align-items: start;
+		gap: 1rem;
 	}
 `;
 

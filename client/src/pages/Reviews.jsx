@@ -119,6 +119,10 @@ const MainContainer = styled.div`
 		display: grid;
 		grid-template-columns: repeat(2, minmax(300px, 1fr));
 		gap: 2rem;
+
+		@media (max-width: 768px) {
+			grid-template-columns: repeat(1, minmax(300px, 1fr));
+		}
 	}
 
 	.reviewerInfo {
@@ -171,6 +175,10 @@ const MainContainer = styled.div`
 		&:active {
 			transform: translateY(0);
 		}
+	}
+
+	.reviewCard {
+		border-bottom: 1px solid grey;
 	}
 `;
 

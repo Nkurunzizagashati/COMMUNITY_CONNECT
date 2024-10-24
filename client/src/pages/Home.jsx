@@ -5,7 +5,8 @@ import ServiceCard from '../components/ServiceCard';
 import Modal from '../components/ServiceModel';
 
 const Home = () => {
-	const [selectedService, setSelectedService] = useState(null); // State to manage selected service
+	const [selectedService, setSelectedService] = useState(null);
+	const [filteredServices, setFilteredServices] = useState([]);
 	const services = useSelector(
 		(state) => state.services?.data.services || []
 	);
@@ -15,31 +16,56 @@ const Home = () => {
 	};
 
 	const handleCloseModal = () => {
-		selectedService && setSelectedService(null);
+		if (selectedService) {
+			setSelectedService(null);
+		}
 	};
 
+	const handleSearch = (e) => {
+		const searchValue = e.target.value.toLowerCase();
+		if (searchValue) {
+			const filtered = services.filter(
+				(service) =>
+					service.name.toLowerCase().includes(searchValue) ||
+					service.category.toLowerCase().includes(searchValue)
+			);
+			setFilteredServices(filtered);
+		} else {
+			setFilteredServices(services);
+		}
+	};
+
+	// Decide which services to show: filtered services or all services
+	const servicesToDisplay = filteredServices.length
+		? filteredServices
+		: services;
+
+	console.log(filteredServices);
+
 	return (
-		<HomeContainer onClick={(e) => handleCloseModal()}>
+		<HomeContainer onClick={handleCloseModal}>
 			<HeroSection>
 				<h1>Discover Local Services in Your Community</h1>
 				<p>
 					Book appointments with top-rated artisans, service
 					providers, and businesses.
 				</p>
-				<SearchBar placeholder="Search services (e.g. plumber, electrician)" />
+				<SearchBar
+					placeholder="Search services (e.g. plumber, electrician)"
+					onChange={handleSearch} // Change from onKeyDown to onChange
+				/>
 			</HeroSection>
 			<ServiceSection>
 				<h2>Featured Services</h2>
 				<ServiceGrid>
-					{/* Map over the services and render ServiceCard for each */}
-					{services?.map((service) => (
+					{servicesToDisplay.map((service) => (
 						<ServiceCard
 							key={service._id}
 							title={service.name}
 							description={service.description}
 							price={service.price}
 							imageUrl={service.images[0]}
-							onClick={() => handleServiceClick(service)} // Show modal on click
+							onClick={() => handleServiceClick(service)}
 						/>
 					))}
 				</ServiceGrid>
@@ -95,4 +121,8 @@ const ServiceGrid = styled.div`
 	display: grid;
 	grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
 	gap: 20px;
+
+	@media (max-width: 1194px) {
+		grid-template-columns: 1fr;
+	}
 `;
