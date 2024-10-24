@@ -83,6 +83,10 @@ const HomeContainer = styled.div`
 	margin: 0 auto;
 	padding: 20px;
 	margin-top: 8rem;
+
+	@media (max-width: 844px) {
+		margin-top: 4rem;
+	}
 `;
 
 const HeroSection = styled.div`
@@ -110,6 +114,7 @@ const SearchBar = styled.input`
 	margin-top: 20px;
 	border-radius: 8px;
 	border: 1px solid #ddd;
+	font-size: 1.2rem;
 
 	@media (max-width: 844px) {
 		margin-top: 1rem;
