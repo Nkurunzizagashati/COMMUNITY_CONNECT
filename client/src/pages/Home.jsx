@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import ServiceCard from '../components/ServiceCard';
 import Modal from '../components/ServiceModel';
+import CardSkeleton from '../components/CardSkeleton';
 
 const categories = [
 	{ name: 'Plumber', icon: '🚰' },
@@ -11,16 +12,24 @@ const categories = [
 	{ name: 'Carpenter', icon: '🔨' },
 	{ name: 'Gardening', icon: '🌱' },
 	{ name: 'Technology', icon: '💻' },
-	// Add more categories as needed
 ];
 
 const Home = () => {
 	const [selectedService, setSelectedService] = useState(null);
 	const [filteredServices, setFilteredServices] = useState([]);
 	const [selectedCategory, setSelectedCategory] = useState('');
+	const [loading, setLoading] = useState(true);
 	const services = useSelector(
 		(state) => state.services?.data.services || []
 	);
+
+	// useEffect to update loading state based on services data
+	useEffect(() => {
+		if (services.length > 0) {
+			setFilteredServices(services); // Set initial filtered services
+			setLoading(false); // Set loading to false once services are available
+		}
+	}, [services]);
 
 	const handleServiceClick = (service) => {
 		setSelectedService(service);
@@ -34,12 +43,9 @@ const Home = () => {
 
 	const handleCategoryClick = (category) => {
 		if (selectedCategory === category) {
-			// Clear the selected category
 			setSelectedCategory('');
-			// Reset the filtered services to show all
-			setFilteredServices(services);
+			setFilteredServices(services); // Show all services
 		} else {
-			// Set the selected category and filter services
 			setSelectedCategory(category);
 			filterServices(category);
 		}
@@ -105,21 +111,30 @@ const Home = () => {
 					providers, and businesses.
 				</p>
 			</HeroSection>
-			<ServiceSection>
-				<h2>Featured Services</h2>
-				<ServiceGrid>
-					{servicesToDisplay.map((service) => (
-						<ServiceCard
-							key={service._id}
-							title={service.name}
-							description={service.description}
-							price={service.price}
-							imageUrl={service.images[0]}
-							onClick={() => handleServiceClick(service)}
-						/>
-					))}
-				</ServiceGrid>
-			</ServiceSection>
+
+			{/* Conditional rendering of CardSkeleton and ServiceCards */}
+			{loading ? (
+				<CardSkeleton />
+			) : (
+				<ServiceSection>
+					<h2>Featured Services</h2>
+					<ServiceGrid>
+						{servicesToDisplay.map((service) => (
+							<ServiceCard
+								key={service._id}
+								title={service.name}
+								description={service.description}
+								price={service.price}
+								imageUrl={service.images[0]}
+								onClick={() =>
+									handleServiceClick(service)
+								}
+							/>
+						))}
+					</ServiceGrid>
+				</ServiceSection>
+			)}
+
 			{selectedService && <Modal service={selectedService} />}
 		</HomeContainer>
 	);

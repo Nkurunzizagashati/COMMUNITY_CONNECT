@@ -16,6 +16,7 @@ import Home from './pages/Home';
 import ProfilePage from './pages/Profile';
 import CreateService from './pages/CreateService';
 import ReviewPage from './pages/Reviews';
+import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
 
 const router = createBrowserRouter([
 	{
@@ -51,7 +52,9 @@ const router = createBrowserRouter([
 ]);
 
 createRoot(document.getElementById('root')).render(
-	<Provider store={store}>
-		<RouterProvider router={router} />
-	</Provider>
+	<SkeletonTheme baseColor="#313131" highlightColor="#525252">
+		<Provider store={store}>
+			<RouterProvider router={router} />
+		</Provider>
+	</SkeletonTheme>
 );
