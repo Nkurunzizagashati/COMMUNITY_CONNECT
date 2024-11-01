@@ -23,11 +23,10 @@ const Home = () => {
 		(state) => state.services?.data.services || []
 	);
 
-	// useEffect to update loading state based on services data
 	useEffect(() => {
 		if (services.length > 0) {
-			setFilteredServices(services); // Set initial filtered services
-			setLoading(false); // Set loading to false once services are available
+			setFilteredServices(services);
+			setLoading(false);
 		}
 	}, [services]);
 
@@ -112,7 +111,6 @@ const Home = () => {
 				</p>
 			</HeroSection>
 
-			{/* Conditional rendering of CardSkeleton and ServiceCards */}
 			{loading ? (
 				<CardSkeleton />
 			) : (
